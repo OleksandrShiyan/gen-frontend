@@ -144,7 +144,7 @@ export default {
     }
   },
   created() {
-    this.isModalOpen = value;
+    this.isModalOpen = this.$attrs.value;
   },
   data: () => ({
     isModalOpen: false,
