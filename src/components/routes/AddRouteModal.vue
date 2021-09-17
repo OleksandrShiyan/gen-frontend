@@ -135,6 +135,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
+            v-if="this.id"
             color="red darken-1"
             text
             @click="deleteRoute"

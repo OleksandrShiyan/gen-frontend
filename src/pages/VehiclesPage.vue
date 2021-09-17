@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="4">
-        <v-card @click="openAddVehicleModal" height="150px">
+        <v-card  @click="openAddVehicleModal" height="150px">
           <v-card-title >Add new vehicle</v-card-title>
         </v-card>
       </v-col>

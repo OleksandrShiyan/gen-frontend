@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="4">
       <v-card @click="openAddRouteModal" height="200px">
-        <v-card-title >Add new route</v-card-title>
+          <v-card-title >Add new route</v-card-title>
       </v-card>
       </v-col>
       <Route
