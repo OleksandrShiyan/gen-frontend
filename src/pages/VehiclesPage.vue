@@ -1,10 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-card>
-        <v-card-title>Add new vehicle</v-card-title>
-        <v-btn @click="openAddVehicleModal"></v-btn>
-      </v-card>
+      <v-col cols="2">
+        <v-card @click="openAddVehicleModal" height="150px">
+          <v-card-title >Add new vehicle</v-card-title>
+        </v-card>
+      </v-col>
       <Vehicle
           v-for="vehicle in  vehicles"
           :key="vehicle.id"

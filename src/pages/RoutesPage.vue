@@ -1,10 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <v-card>
-        <v-card-title>Add new route</v-card-title>
-        <v-btn @click="openAddRouteModal"></v-btn>
+      <v-col cols="2">
+      <v-card @click="openAddRouteModal" height="200px">
+        <v-card-title >Add new route</v-card-title>
       </v-card>
+      </v-col>
       <Route
           v-for="route in  routes"
           :key="route.id"
