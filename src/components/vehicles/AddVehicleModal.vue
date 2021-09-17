@@ -9,78 +9,86 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-row>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  label="Model *"
-                  v-model="model"
-                  required
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  label="Plate number *"
-                  v-model="plate_number"
-                  required
-                  hint="example of helper text only on focus"
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  label="Mileage in km. *"
-                  v-model="mileage"
-                  hint="example of persistent helper text"
-                  required
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  label="Purchase date *"
-                  v-model="purchase_date"
-                  required
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-select
-                  :items="statuses"
-                  v-model="status"
-                  label="Status"
-                  required
-              ></v-select>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-select
-                  :items="types"
-                  v-model="type"
-                  label="Type"
-                  required
-              ></v-select>
-            </v-col>
-          </v-row>
+          <v-form ref="form">
+            <v-row>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-text-field
+                    required
+                    :rules="textRules"
+                    label="Model *"
+                    v-model="model"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-text-field
+                    required
+                    :rules="textRules"
+                    label="Plate number *"
+                    v-model="plate_number"
+                    hint="example of helper text only on focus"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-text-field
+                    :rules="textRules"
+                    label="Mileage in km. *"
+                    v-model="mileage"
+                    hint="example of persistent helper text"
+                    required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-text-field
+                    :rules="textRules"
+                    label="Purchase date *"
+                    v-model="purchase_date"
+                    required
+                ></v-text-field>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-select
+                    :rules="selectRules"
+                    :items="statuses"
+                    v-model="status"
+                    label="Status *"
+                    required
+                ></v-select>
+              </v-col>
+              <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+              >
+                <v-select
+                    :rules="selectRules"
+                    :items="types"
+                    v-model="type"
+                    label="Type *"
+                    required
+                ></v-select>
+              </v-col>
+            </v-row>
+          </v-form>
         </v-container>
         <small>*indicates required field</small>
       </v-card-text>
@@ -147,27 +155,36 @@ export default {
     mileage: null,
     status: null,
     statuses: [],
-    types: []
+    types: [],
+    textRules: [
+      v => v && v.length >= 1 || "Field is required",
+        v => v && v.length <= 14 || "Field should contain less than 14 symbols"
+    ],
+    selectRules: [
+      v => v && v > 0 || "Field is required"
+    ]
 
   }),
   methods: {
     async updateVehicle() {
-      const vehicleObj = {
-        id: this.id,
-        plate_number: this.plate_number,
-        model: this.model,
-        type: this.type,
-        purchase_date: this.purchase_date,
-        mileage: this.mileage,
-        status: this.status,
-      };
-      if (this.id) {
-        await vehiclesAPI.updateVehicle(vehicleObj)
-      } else {
-        await vehiclesAPI.addVehicle(vehicleObj)
+      if (this.$refs.form.validate()){
+        const vehicleObj = {
+          id: this.id,
+          plate_number: this.plate_number,
+          model: this.model,
+          type: this.type,
+          purchase_date: this.purchase_date,
+          mileage: this.mileage,
+          status: this.status,
+        };
+        if (this.id) {
+          await vehiclesAPI.updateVehicle(vehicleObj)
+        } else {
+          await vehiclesAPI.addVehicle(vehicleObj)
+        }
+        this.refetchVehicles()
+        this.isModalOpen = false
       }
-      this.refetchVehicles()
-      this.isModalOpen = false
     },
     async deleteVehicle() {
       await vehiclesAPI.deleteVehicle(this.id)
