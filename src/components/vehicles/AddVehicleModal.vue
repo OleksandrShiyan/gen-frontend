@@ -54,12 +54,29 @@
                   sm="6"
                   md="4"
               >
-                <v-text-field
-                    :rules="textRules"
-                    label="Purchase date *"
-                    v-model="purchase_date"
-                    required
-                ></v-text-field>
+                <v-menu
+                    v-model="isDatePickerActive"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        readonly
+                        v-model="purchase_date"
+                        label="Purchase date *"
+                        prepend-icon="mdi-calendar"
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                      v-model="purchase_date"
+                      @input="isDatePickerActive = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col
                   cols="12"
@@ -147,6 +164,7 @@ export default {
     this.isModalOpen = this.$attrs.value;
   },
   data: () => ({
+    isDatePickerActive: false,
     isModalOpen: false,
     id: null,
     plate_number: null,
@@ -164,7 +182,6 @@ export default {
     selectRules: [
       v => v && v > 0 || "Field is required"
     ]
-
   }),
   methods: {
     async updateVehicle() {

@@ -54,20 +54,56 @@
                   sm="6"
                   md="4"
               >
-                <v-text-field
-                    required
-                    :rules="textRules"
-                    label="Departure date *"
-                    v-model="departure_date"
-                ></v-text-field>
+                <v-menu
+                    v-model="isDatePicker2Active"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="departure_date"
+                        label="Departure date *"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                      v-model="departure_date"
+                      @input="isDatePicker2Active = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col cols="12"
                      sm="6"
                      md="4">
-                <v-text-field
-                    label="Completion date"
-                    v-model="completion_date"
-                ></v-text-field>
+                <v-menu
+                    v-model="isDatePicker1Active"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="completion_date"
+                        label="Completion date"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                      v-model="completion_date"
+                      @input="isDatePicker1Active = false"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
               <v-col
                   cols="12"
@@ -188,6 +224,8 @@ export default {
     this.isModalOpen = this.$attrs.value;
   },
   data: () => ({
+    isDatePicker1Active: false,
+    isDatePicker2Active: false,
     isModalOpen: false,
     id: null,
     start_city: null,
