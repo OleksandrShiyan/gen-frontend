@@ -43,7 +43,7 @@
               >
                 <v-text-field
                     required
-                    :rules="textRules"
+                    :rules="selectRules"
                     label="Expected revenue in $ *"
                     v-model="expected_revenue"
                     hint="example of persistent helper text"
